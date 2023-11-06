@@ -157,15 +157,11 @@ docker push vnk8071/token-flask-app:latest
 eksctl create cluster --name eksctl-demo-flask-token --nodes=2 --instance-types=t2.medium --region=us-east-1
 ```
 
-![eksctl_create](images/eksctl_create.png)
 
 Get cluster information:
 ```bash
 kubectl get nodes
 ```
-![get_nodes](images/get_nodes.png)
-
-![k9s_deployment](images/k9s_deployment.png)
 
 ### Get current AWS account
 ```bash
@@ -205,20 +201,13 @@ In GitHub, go to Settings > Developer settings > Personal access tokens > Genera
 2. Review the resources
 3. Create stack
 
-![cloudformation_stack](images/cloudformation_stack.png)
-
 ### Create CodePipeline
 Details in `buildspec.yml` file
-
-### Check CodePipeline Deployment
-![codepipeline_build](images/codepipeline_build.png)
 
 ### Test Endpoint
 ```bash
 kubectl get services simple-jwt-api -o wide
 ```
-
-![kubectl_service](images/kubectl_service.png)
 
 Request method `POST`:
 ```bash
@@ -248,23 +237,3 @@ aws cloudformation delete-stack --stack-name <stack-name>
 ```bash
 eksctl delete cluster --name <eksname> --region=us-east-1
 ```
-
-## Monitoring
-### Deployments
-![k9s_deploymments](images/k9s_deployments.png)
-
-### Pods
-![k9s_pods](images/k9s_pods.png)
-
-### Containers
-![k9s_containers](images/k9s_containers.png)
-
-### Logs
-![k9s_logs](images/k9s_logs.png)
-
-## Auto CI/CD
-### Push new commit to GitHub
-![push_new_commit](images/push_new_commit.png)
-
-### Check CodePipeline Deployment
-![trigger_new_commit](images/trigger_new_commit.png)
