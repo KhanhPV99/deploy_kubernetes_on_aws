@@ -1,11 +1,11 @@
-# Deploy Your Flask App to Kubernetes Using EKS
+# Prj: "Deploy your Flask application to Kubernetes using EKS"
 
 ## Prerequisites
-* Docker Desktop - Installation instructions for all OSes can be found <a href="https://docs.docker.com/install/" target="_blank">here</a>.
-* Git: <a href="https://git-scm.com/downloads" target="_blank">Download and install Git</a> for your system.
-* Code editor: You can <a href="https://code.visualstudio.com/download" target="_blank">download and install VS code</a> here.
-* AWS Account
-* Python version between 3.7 and 3.9. Check the current version using:
+- Docker Desktop - Installation instructions for all OSes can be found <a href="https://docs.docker.com/install/" target="_blank">here</a>.
+- Git: <a href="https://git-scm.com/downloads" target="_blank">Download and install Git</a> for your system.
+- Code editor: You can <a href="https://code.visualstudio.com/download" target="_blank">download and install VS code</a> here.
+- AWS Account
+- Python version from 3.7 to 3.9. Check the current version using:
 ```bash
 #  Mac/Linux/Windows
 python --version
@@ -16,22 +16,24 @@ You can download a specific release version from <a href="https://www.python.org
 ```bash
 #  Mac/Linux/Windows Check the current version
 pip --version
+
 # Mac/Linux
 pip install --upgrade pip==20.2.3
+
 # Windows
 python -m pip install --upgrade pip==20.2.3
 ```
-* Terminal
-   * Mac/Linux users can use the default terminal.
-   * Windows users can use either the GitBash terminal or WSL.
-* Command line utilities:
-  * AWS CLI installed and configured using the `aws configure` command. Another important configuration is the region. Do not use the us-east-1 because the cluster creation may fails mostly in us-east-1. Let's change the default region to:
+- Terminal
+   - Mac/Linux users can use the default terminal.
+   - Windows users can use the GitBash or WSL terminal.
+- Command line utilities:
+  - The AWS CLI is install and configure using the `aws configure` command. Another important configuration is the region. Do not use the us-east-1 because the cluster creation may fails mostly in us-east-1. Let's change the default region to:
   ```bash
   aws configure set region us-east-2
   ```
-  Ensure to create all your resources in a single region.
-  * EKSCTL installed in your system. Follow the instructions [available here](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) or <a href="https://eksctl.io/introduction/#installation" target="_blank">here</a> to download and install `eksctl` utility.
-  * The KUBECTL installed in your system. Installation instructions for kubectl can be found <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">here</a>.
+  Make sure to create all your resources in a single area.
+  - EKSCTL installed in your system. Follow the instructions [available here](https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html#installing-eksctl) or <a href="https://eksctl.io/introduction/#installation" target="_blank">here</a> to download and install `eksctl` utility.
+  - The KUBECTL installed in your system. Installation instructions for kubectl can be found <a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">here</a>.
 
 ## Installation
 ### Install AWS CLI
@@ -75,45 +77,14 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Request method `POST`:
-```bash
-export TOKEN=`curl --data '{"email":"khoivn@email.com","password":"mypwd"}' --header "Content-Type: application/json" -X POST localhost:8080/auth  | jq -r '.token'`
-```
-
-Response: `echo $TOKEN`
-```bash
-eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTc5NjUyNjcsIm5iZiI6MTY5Njc1NTY2NywiZW1haWwiOiJraG9pdm5AZW1haWwuY29tIn0.hZr2RQqnroNdly_j9yRKpO7Z6yEwx7pNleFfB25IjHs
-```
-
 Request method `GET`:
 ```bash
 curl --request GET 'http://localhost:8080/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
 ```
 
-Response:
-```bash
-{
-  "email": "khoivn@email.com",
-  "exp": 1697965267,
-  "nbf": 1696755667
-}
-```
-
 ### Run Pytest
 ```bash
 pytest test_main.py --disable-pytest-warnings
-```
-
-Result:
-```python
-=================================================================================== test session starts ====================================================================================
-platform darwin -- Python 3.8.18, pytest-6.2.2, py-1.11.0, pluggy-0.13.1
-rootdir: /Users/macos/projects/Kelvin/pipeline-deploy-kubernetes-on-aws
-collected 2 items
-
-test_main.py ..                                                                                                                                                                      [100%]
-
-============================================================================== 2 passed, 5 warnings in 0.22s ===============================================================================
 ```
 
 ### Build Docker Image
@@ -124,25 +95,6 @@ docker build -t token-flask-app .
 ### Run Docker Container
 ```bash
 docker run --detach --publish 80:8080 --env-file=.env_file token-flask-app
-```
-
-### Test Docker Container
-```bash
-export TOKEN=`curl --data '{"email":"khoivn@email.com","password":"mypwd"}' --header "Content-Type: application/json" -X POST localhost:80/auth  | jq -r '.token'`
-```
-
-Result:
-```bash
-curl --request GET 'http://localhost:80/contents' -H "Authorization: Bearer ${TOKEN}" | jq .
-```
-
-Result"
-```bash
-{
-  "email": "khoivn@email.com",
-  "exp": 1697977237,
-  "nbf": 1696767637
-}
 ```
 
 ### Push Docker Image to Docker Hub
@@ -180,11 +132,6 @@ Result: `arn:aws:iam::993324276116:role/UdacityFlaskDeployCBKubectlRole`
 aws iam put-role-policy --role-name UdacityFlaskDeployCBKubectlRole --policy-name eks-describe --policy-document file://iam-role-policy.json
 ```
 
-### Set Environment Variables
-```bash
-aws ssm put-parameter --name JWT_SECRET --value "KhoiVN-secret" --type  SecureString --region us-east-1
-```
-
 ### Create Kubernetes ConfigMap
 ```bash
 kubectl get -n kube-system configmap/aws-auth -o yaml > /tmp/aws-auth-patch.yml
@@ -197,9 +144,9 @@ Result: `configmap/aws-auth patched`
 In GitHub, go to Settings > Developer settings > Personal access tokens > Generate new token
 
 ### Create CloudFormation Stack
-1. Modify `ci-cd-codepipeline.cfn.yaml` file
-2. Review the resources
-3. Create stack
+* Modify `ci-cd-codepipeline.cfn.yaml` file.
+* Review the resources.
+* Create stack.
 
 ### Create CodePipeline
 Details in `buildspec.yml` file
@@ -207,25 +154,6 @@ Details in `buildspec.yml` file
 ### Test Endpoint
 ```bash
 kubectl get services simple-jwt-api -o wide
-```
-
-Request method `POST`:
-```bash
-export TOKEN=`curl -d '{"email":"khoivn@email.com","password":"mypwd"}' -H "Content-Type: application/json" -X POST ad4d5c8ff64e142a7b7adba1b35a5b56-2013205018.us-east-1.elb.amazonaws.com/auth  | jq -r '.token'`
-```
-
-Request method `GET`:
-```bash
-curl --request GET 'ad4d5c8ff64e142a7b7adba1b35a5b56-2013205018.us-east-1.elb.amazonaws.com/contents' -H "Authorization: Bearer ${TOKEN}" | jq
-```
-
-Result:
-```bash
-{
-  "email": "khoivn@email.com",
-  "exp": 1698029355,
-  "nbf": 1696819755
-}
 ```
 
 ### Delete CloudFormation Stack
