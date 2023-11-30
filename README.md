@@ -165,3 +165,5 @@ aws cloudformation delete-stack --stack-name <stack-name>
 ```bash
 eksctl delete cluster --name <eksname> --region=us-east-1
 ```
+
+URL: http://a03a1577fc7684874a3d313df1b1e3f5-257712390.us-east-1.elb.amazonaws.com/

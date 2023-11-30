@@ -5,7 +5,7 @@ import json
 
 EMAIL = 'khanhpv801@email.com'
 PASSWORD = 'Khanh3001@'
-SECRET = 'KHANHSecret'
+SECRET = 'myjwtsecret'
 TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2OTc5NjUyNjcsIm5iZiI6MTY5Njc1NTY2NywiZW1haWwiOiJraG9pdm5AZW1haWwuY29tIn0.hZr2RQqnroNdly_j9yRKpO7Z6yEwx7pNleFfB25IjHs'
 
 @pytest.fixture
