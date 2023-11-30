@@ -18,7 +18,7 @@ Parameters:
     Type: String
     Default: pipeline-deploy-kubernetes-on-aws
     Description: GitHub source repository - must contain a Dockerfile and buildspec.yml in the base
-    ConstraintDescription: You must enter a GitHub repository name
+    ConstraintDescription: deploy_kubernetes_on_aws
     MinLength: 1
     MaxLength: 100
 
@@ -40,7 +40,7 @@ Parameters:
 
   GitHubUser:
     Type: String
-    Default: vnk8071
+    Default: KhanhPV99
     Description: GitHub username or organization
     ConstraintDescription: You must enter a GitHub username or organization
     MinLength: 3
@@ -48,7 +48,7 @@ Parameters:
 
   CodeBuildDockerImage:
     Type: String
-    Default: aws/codebuild/standard:4.0
+    Default: khanhpv801/token-flask-app:latest
     Description: AWS CodeBuild Docker optimized image
     ConstraintDescription: You must enter a CodeBuild Docker image
     MinLength: 3
